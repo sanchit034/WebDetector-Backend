@@ -3,13 +3,14 @@ const bcrypt = require('bcrypt');
 module.exports.setQuestion = async (req, res, next) => {
     try {
         console.log(req.body);
-        const { set, queNo, queUrl, queAns } = req.body;
+        const { set, queNo, queUrl, queAns, queHint } = req.body;
         const hashedAns = await bcrypt.hash(queAns.toLowerCase(),10);
         const ques = await Question.create({
             set,
             queNo,
             queUrl,
-            queAns:hashedAns
+            queAns:hashedAns,
+            queHint
         })
 
         return res.json({
@@ -23,7 +24,7 @@ module.exports.setQuestion = async (req, res, next) => {
 
 module.exports.updateQuestion = async(req,res,next)=>{
     try {
-        const { set, queNo, queUrl, queAns } = req.body;
+        const { set, queNo, queUrl, queAns, queHint } = req.body;
            if(!set && !queNo){
             return res.json({
                 msg:"Question is not found",
@@ -33,7 +34,7 @@ module.exports.updateQuestion = async(req,res,next)=>{
         const hashedAns = await bcrypt.hash(queAns,10);
             const updatedQuestion = await Question.findOneAndUpdate(
                 { set: set , queNo:queNo },
-                {queUrl: queUrl , queAns : hashedAns },
+                {queUrl: queUrl , queAns : hashedAns, queHint: queHint },
                 { new: true }
               );
               if (!updatedQuestion) {
