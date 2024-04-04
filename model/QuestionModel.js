@@ -15,7 +15,11 @@ const questionSchema = new mongoose.Schema({
     queAns : { 
         type : String,
         required : true
-    }
+    },
+    queHint : [{
+        type: String,
+        required:true
+    }]
 })
 
 module.exports = mongoose.model("Questions",questionSchema);

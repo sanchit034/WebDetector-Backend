@@ -43,13 +43,19 @@ module.exports.fetchQuestion = async (req, res, next) => {
             if (!updatedAnswer) {
                 console.log("User data not updated")
             }
+            let quesHint = "";
             return res.json({
                 message: "Question found",
                 status: true,
-                question
+                questionNo: question.queNo,
+                questionURL: question.queUrl,
+                questionHint: quesHint,
+                lastUpdated: testStartTime
             });
         }
         maxScore = documents[0].score;
+        const teamDetails = await Team.find({_id:teamid});
+        const lastUpdatedTime = teamDetails[0].updatedAt;
 
         for (let i = 1; i < documents.length; i++) {
             maxScore = Math.max(maxScore, documents[i].score);
@@ -73,10 +79,25 @@ module.exports.fetchQuestion = async (req, res, next) => {
         if (!updatedAnswer) {
             console.log("User data not updated")
         }
+        let quesHint = [];
+        const lastUpdatedTimeStamp = new Date(lastUpdatedTime);
+        const timeDiff = (currentTime.getTime() - lastUpdatedTimeStamp.getTime()) / 1000;
+        if(timeDiff > 900) {
+            quesHint.push(question.queHint[0]);
+            if(timeDiff > 1800) {
+                quesHint.push(question.queHint[1]);
+                if(timeDiff > 2700) {
+                    quesHint.push(question.queHint[2]);
+                }
+            }
+        }
         return res.json({
             message: "Question found",
             status: true,
-            question
+            questionNo: question.queNo,
+            questionURL: question.queUrl,
+            questionHint: quesHint,
+            lastUpdated: lastUpdatedTime
         });
 
     } catch (error) {
