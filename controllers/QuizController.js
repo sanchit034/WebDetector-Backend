@@ -43,7 +43,18 @@ module.exports.fetchQuestion = async (req, res, next) => {
             if (!updatedAnswer) {
                 console.log("User data not updated")
             }
-            let quesHint = "";
+            let quesHint = [];
+            const lastUpdatedTimeStamp = new Date("2024-04-05T22:00:00");
+            const timeDiff = (currentTime.getTime() - lastUpdatedTimeStamp.getTime()) / 1000;
+            if(timeDiff > 300) {
+                quesHint.push(question.queHint[0]);
+                if(timeDiff > 600) {
+                    quesHint.push(question.queHint[1]);
+                    if(timeDiff > 900) {
+                        quesHint.push(question.queHint[2]);
+                    }
+                }
+            }
             return res.json({
                 message: "Question found",
                 status: true,
@@ -82,11 +93,11 @@ module.exports.fetchQuestion = async (req, res, next) => {
         let quesHint = [];
         const lastUpdatedTimeStamp = new Date(lastUpdatedTime);
         const timeDiff = (currentTime.getTime() - lastUpdatedTimeStamp.getTime()) / 1000;
-        if(timeDiff > 900) {
+        if(timeDiff > 300) {
             quesHint.push(question.queHint[0]);
-            if(timeDiff > 1800) {
+            if(timeDiff > 600) {
                 quesHint.push(question.queHint[1]);
-                if(timeDiff > 2700) {
+                if(timeDiff > 900) {
                     quesHint.push(question.queHint[2]);
                 }
             }

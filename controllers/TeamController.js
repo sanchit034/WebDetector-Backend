@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports.createTeam = async (req,res,next)=>{
     try {
+        return res.json({})
         if(!req.headers.userid){
            return res.status(404).json({error : "Cookie error", status : false})
         }
@@ -52,7 +53,7 @@ module.exports.createTeam = async (req,res,next)=>{
 
 module.exports.joinTeam = async (req,res,next)=>{
     try {
-        
+        return res.json({})
         if(req.headers.userid)
         {
         const {teamCode}=req.body;
