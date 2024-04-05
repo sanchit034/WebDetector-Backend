@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 module.exports.setQuestion = async (req, res, next) => {
     try {
         console.log(req.body);
+        return res.json({})
         const { set, queNo, queUrl, queAns, queHint } = req.body;
         const hashedAns = await bcrypt.hash(queAns.toLowerCase(),10);
         const ques = await Question.create({
@@ -24,6 +25,7 @@ module.exports.setQuestion = async (req, res, next) => {
 
 module.exports.updateQuestion = async(req,res,next)=>{
     try {
+        return res.json({})
         const { set, queNo, queUrl, queAns, queHint } = req.body;
            if(!set && !queNo){
             return res.json({
