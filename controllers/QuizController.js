@@ -8,6 +8,7 @@ const Team = require('../model/TeamModel');
 module.exports.fetchQuestion = async (req, res, next) => {
     try {
         const set = req.params.set;
+        const testStartDate = process.env.START_TIME || '2024-04-06T21:30:00';
         const testStartTime = new Date('2024-03-11T21:40:00'); // Set the desired start time
         const currentTime = new Date();
         console.log(currentTime + " " + testStartTime)
